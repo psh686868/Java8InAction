@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+    <script>
+        $.get("http://hangzhou.taofangdd.com/building/comment/query.htm?",{buildingId : 44 ,pageNo : 1, pageSize : 4},function (data) {
+            console.log(data)
+        })
+    </script>
+</body>
+</html>
