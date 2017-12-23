@@ -1,5 +1,6 @@
 package utils;
 
+
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -11,30 +12,41 @@ import java.util.function.Supplier;
  */
 public class CopyUtilFunction {
 
-
-    private static <T> void copyIfNotNull(Supplier<T> supplier, Consumer<T> consumer) {
-        copyIfNotNull(supplier, consumer, Function.identity());
+    /**
+     * 数据copy
+     * @param supplier
+     * @param consumer
+     * @param <T>
+     */
+    public static  <T> void copyIfNotNull (Supplier<T>supplier,Consumer<T> consumer) {
+        copyIfNotNull (supplier,consumer,Function.identity());
     }
 
-    private static <S, C> void copyIfNotNull(Supplier<S> supplier, Consumer<C> consumer,
-                                             Function<S, C> converter) {
+    /**
+     *
+     * @param supplier
+     * @param consumer
+     * @param idetify
+     * @param <S>
+     * @param <C>
+     */
+    public static  <S,C> void copyIfNotNull (Supplier<S>supplier,Consumer<C> consumer,Function<S,C> idetify) {
         S value = supplier.get();
         if (value != null) {
-            consumer.accept(converter.apply(value));
+            consumer.accept(idetify.apply(value));
         }
     }
 
-    public static Integer supplier () {
-        return 1;
-    }
-
-    public static void consumer ( String s) {
-        System.out.println(s);
-    }
 
     public static void main(String[] args) {
-        Person psh = Person.builder().name("psh").age(18).sex("nam").build();
+        Person psh = new Person("psh","nan",18);
+        Person psh2 = new Person();
+        Person psh3 = new Person();
+
+        CopyUtilFunction.copyIfNotNull(psh::getName,psh2::setName);
+        CopyUtilFunction.copyIfNotNull(psh::getName,psh3::setName,String::toUpperCase);
+
         System.out.println(psh);
-        //CopyUtilFunction.copyIfNotNull(psh::getName);
     }
 }
+
