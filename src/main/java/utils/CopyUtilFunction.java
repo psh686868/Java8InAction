@@ -26,25 +26,29 @@ public class CopyUtilFunction {
      *
      * @param supplier
      * @param consumer
-     * @param idetify
+     * @param function
      * @param <S>
      * @param <C>
      */
-    public static  <S,C> void copyIfNotNull (Supplier<S>supplier,Consumer<C> consumer,Function<S,C> idetify) {
+    public static <S,C>  void copyIfNotNull (Supplier<S> supplier,Consumer<C> consumer,Function<S,C> function) {
         S value = supplier.get();
         if (value != null) {
-            consumer.accept(idetify.apply(value));
+            consumer.accept(function.apply(value));
         }
     }
 
 
+
     public static void main(String[] args) {
         Person psh = new Person("psh","nan",18);
+        Person ps = new Person("1","nan",18);
         Person psh2 = new Person();
         Person psh3 = new Person();
+        Person psh4 = new Person();
 
         CopyUtilFunction.copyIfNotNull(psh::getName,psh2::setName);
         CopyUtilFunction.copyIfNotNull(psh::getName,psh3::setName,String::toUpperCase);
+        CopyUtilFunction.copyIfNotNull(ps::getName,psh3::setAge,Integer::parseInt);
 
         System.out.println(psh);
     }
