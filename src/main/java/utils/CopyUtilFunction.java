@@ -1,6 +1,8 @@
 package utils;
 
 
+import utils.testhelp.Person;
+
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -37,20 +39,5 @@ public class CopyUtilFunction {
         }
     }
 
-
-
-    public static void main(String[] args) {
-        Person psh = new Person("psh","nan",18);
-        Person ps = new Person("1","nan",18);
-        Person psh2 = new Person();
-        Person psh3 = new Person();
-        Person psh4 = new Person();
-
-        CopyUtilFunction.copyIfNotNull(psh::getName,psh2::setName);
-        CopyUtilFunction.copyIfNotNull(psh::getName,psh3::setName,String::toUpperCase);
-        CopyUtilFunction.copyIfNotNull(ps::getName,psh3::setAge,Integer::parseInt);
-
-        System.out.println(psh);
-    }
 }
 

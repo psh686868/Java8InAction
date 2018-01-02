@@ -10,6 +10,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.ImmediateEventExecutor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.lang.management.ManagementFactory;
+
 
 /**
  * Create by psh
@@ -20,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ChatServer {
     private String defaultAdd = "127.0.0.1";
-    private int defaultPort = 8888;
+    private int defaultPort = 8282;
 
 
     private final EventLoopGroup bossGroup;
@@ -29,6 +31,8 @@ public class ChatServer {
 
     private final ChannelGroup channelGroup;
 
+    private final ServerBootstrap bootstrap ;
+
 
     private Channel channel;
 
@@ -36,24 +40,29 @@ public class ChatServer {
         bossGroup = new NioEventLoopGroup();
         wokerGroup = new NioEventLoopGroup();
         channelGroup = new DefaultChannelGroup(ImmediateEventExecutor.INSTANCE);
-        init();
+        bootstrap = new ServerBootstrap();
     }
 
-    public void init () {
-        ServerBootstrap bootstrap = new ServerBootstrap();
-        this.start(bootstrap);
+    public void start () {
+        this.start(this.defaultAdd,this.defaultPort);
     }
 
-    public void start (ServerBootstrap bootstrap) {
-        bootstrap.group(bossGroup,wokerGroup)
+    public void start (int port) {
+        this.start(this.defaultAdd,port);
+    }
+
+    public void start (String addRess,int port) {
+        bootstrap.group(this.bossGroup,this.wokerGroup)
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new ChatServerInitalizer(channelGroup));
         try {
             channel = bootstrap.bind(defaultAdd, defaultPort).sync().channel();
         } catch (InterruptedException e) {
             e.printStackTrace();
+            log.info("聊天程序启动失败:",e);
         }
     }
+
 
     //停止聊天 释放服务
     public void destory () {
@@ -68,5 +77,18 @@ public class ChatServer {
         wokerGroup.shutdownGracefully();
     }
 
+    public static void main(String[] args) {
+        ChatServer chatServer = new ChatServer();
+        chatServer.start();
+        int i = Runtime.getRuntime().availableProcessors();
+
+        System.out.println(i);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("shutdown");
+            chatServer.destory();
+        }));
+
+    }
 
 }
