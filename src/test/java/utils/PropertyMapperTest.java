@@ -7,6 +7,7 @@ import utils.testhelp.ProMapTarget;
 import utils.testhelp.ProMapSource;
 
 import java.time.Duration;
+import java.util.function.Consumer;
 
 /**
  * @author PSH
@@ -33,6 +34,7 @@ public class PropertyMapperTest {
         Assert.assertNotNull(target.getData1());
 
     }
+
 
     @Test
     public void testPropertyWhenNot() {
