@@ -3,6 +3,10 @@ package threads;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.ScheduledFuture;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -106,6 +110,7 @@ public class PracticeScheduledThreadPoolExecutor {
 
         }
 
+        Map<String,String> map = new HashMap<>(8);
 
     }
 }

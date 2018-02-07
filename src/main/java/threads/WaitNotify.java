@@ -11,6 +11,7 @@ public class WaitNotify {
     static boolean flag = true;
 
     public static void main(String[] args) throws Exception {
+
         new Thread(new WaitThread(),"WaitThread").start();
 
         Thread.sleep(500);
