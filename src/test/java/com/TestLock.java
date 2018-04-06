@@ -16,6 +16,7 @@ public class TestLock {
         System.out.println(testLock.a == testLock.b);
         System.out.println(testLock.b);
         System.out.println(testLock.a);
+
     }
 
     public synchronized  void app() {

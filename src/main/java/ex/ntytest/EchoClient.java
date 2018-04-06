@@ -10,6 +10,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
 
 
 public class EchoClient {
@@ -38,6 +39,7 @@ public class EchoClient {
     }
 
     public void start() throws Exception {
+        ArrayList a  = new ArrayList();
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
         try {

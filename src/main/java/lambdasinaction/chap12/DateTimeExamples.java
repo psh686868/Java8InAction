@@ -1,9 +1,12 @@
 package lambdasinaction.chap12;
 
+import org.apache.commons.lang3.StringUtils;
+
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import static java.time.temporal.TemporalAdjusters.nextOrSame;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.Duration;
@@ -19,9 +22,9 @@ import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAdjuster;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DateTimeExamples {
 
@@ -32,19 +35,32 @@ public class DateTimeExamples {
     };
 
     public static void main(String[] args) {
-        useOldDate();
-        useLocalDate();
-        useTemporalAdjuster();
-        useDateFormatter();
+//        useOldDate();
+//        useLocalDate();
+//        useTemporalAdjuster();
+//        useDateFormatter();
+//
+//        LocalDate now = LocalDate.now();
+//        LocalDate minus = now.minus(1, ChronoUnit.WEEKS);
+//        //now.plus()
+//        System.out.println("!!!!"+now);
+//        System.out.println("!!!!"+minus);
+//
+//        System.out.println(now.toString());
+//        System.out.println(minus.toString());
 
-        LocalDate now = LocalDate.now();
-        LocalDate minus = now.minus(1, ChronoUnit.WEEKS);
-        //now.plus()
-        System.out.println("!!!!"+now);
-        System.out.println("!!!!"+minus);
 
-        System.out.println(now.toString());
-        System.out.println(minus.toString());
+//        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
+//        int l = 1516598308;
+//        Long aLong = Long.valueOf(l) * 1000;
+//        Long time = new Long((l * 1000));
+//
+//        String d = format.format(aLong);
+//        System.out.println(d);
+        String ss = "https://shiyong.souche.com/s/TeMjSyhcv7";
+
+        String s = changUrl("http://www.baidu.com", ss);
+        System.out.println(s);
 
     }
 
@@ -164,4 +180,69 @@ public class DateTimeExamples {
         System.out.println(date.format(complexFormatter));
     }
 
+    public static <T> Long getDate(T t) {
+        if (t == null) {
+            return null;
+        }
+        //判断是时间搓
+        Pattern compile = Pattern.compile("[0-9]*");
+        Matcher matcher = compile.matcher(t.toString());
+        if (matcher.find()) {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Long time = new Long(matcher.group());
+            String d = format.format(time);
+            Date date = null;
+            try {
+                date = format.parse(d);
+                return date.getTime();
+            } catch (ParseException e) {
+                throw new RuntimeException("时间转换错误: " + e);
+            }
+        } else {
+            return 1L;
+        }
+
+    }
+
+    public static <T> Integer getDate2(T t) {
+        if (t == null) {
+            return null;
+        }
+        Pattern compile = Pattern.compile("[0-9]*");
+        Matcher matcher = compile.matcher(t.toString());
+        if (matcher.find()) {
+            String group = matcher.group();
+            return Integer.parseInt(group);
+        } else if (t instanceof String) {
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            Date date = null;
+            try {
+                date = format.parse((String) t);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.print("Format To times:" + date.getTime());
+
+            return null;
+        }
+        return null;
+
+
+    }
+
+    private static String changUrl(String siteDomain ,String resultShareUrl) {
+        if (StringUtils.isBlank(resultShareUrl) || StringUtils.isBlank(siteDomain)) {
+            return "";
+        }
+        String linkId = "";
+        String[] split = resultShareUrl.split("/sl/");
+        List<String> strings = Arrays.asList(split);
+        Optional<String> first = strings.stream().skip(1).findFirst();
+        if (first.isPresent()) {
+            linkId = first.get();
+        }
+        return siteDomain + "/venus/sl" + linkId;
+    }
 }

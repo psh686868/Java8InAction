@@ -1,5 +1,7 @@
 package threads;
 
+import reactor.Test;
+
 /**
  * Create by psh
  * Date: 2017/12/5
@@ -10,10 +12,15 @@ public class TestDeadLock {
     private static  String b = "b";
 
     public static void main(String[] args) {
-        new TestDeadLock().deadLock();
+        TestJoin testJoin = new TestJoin();
+        Byte[] aByte = new Byte[10];
+//        synchronized (a) {
+//            System.out.println(a);
+//        }
+//        new TestDeadLock().deadLock(20);
     }
 
-    private void deadLock() {
+    private int deadLock(int param) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -29,7 +36,7 @@ public class TestDeadLock {
                 }
 
             }
-        });
+        },"Thread one");
 
         Thread thread1 = new Thread(new Runnable() {
             @Override
@@ -41,7 +48,7 @@ public class TestDeadLock {
                     }
                 }
             }
-        });
+        },"thread two");
 
         thread.start();
 
@@ -52,5 +59,7 @@ public class TestDeadLock {
         }
 
         thread1.start();
+
+        return param;
     }
 }

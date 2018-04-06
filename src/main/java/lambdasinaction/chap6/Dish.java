@@ -41,7 +41,7 @@ public class Dish {
         return name;
     }
 
-    public static final List<Dish> menu =
+    public static final List<Dish> menu = //new ArrayList<>();
             asList( new Dish("pork", false, 800, Dish.Type.MEAT),
                     new Dish("beef", false, 700, Dish.Type.MEAT),
                     new Dish("chicken", false, 400, Dish.Type.MEAT),
@@ -64,5 +64,9 @@ public class Dish {
         dishTags.put("pizza", asList("tasty", "salty"));
         dishTags.put("prawns", asList("tasty", "roasted"));
         dishTags.put("salmon", asList("delicious", "fresh"));
+    }
+
+    public static void main(String[] args) {
+        System.out.println("aa".equals(null));
     }
 }

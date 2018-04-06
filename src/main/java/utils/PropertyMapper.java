@@ -85,6 +85,7 @@ public final class PropertyMapper {
     public <T> Source<T> from(Supplier<T> supplier) {
         Objects.requireNonNull(supplier, "Supplier must not be null");
         Source<T> source = getSource(supplier);
+        System.out.println(source);
         if (this.sourceOperator != null) {
             source = this.sourceOperator.apply(source);
         }
@@ -252,8 +253,10 @@ public final class PropertyMapper {
          * @return a new filtered source instance
          */
         public Source<T> when(Predicate<T> predicate) {
+            System.out.println(this);
             Objects.requireNonNull(predicate, "Predicate must not be null");
-            return new Source<>(this.supplier, predicate);
+            Source<T> tSource = new Source<>(this.supplier, predicate);
+            return tSource;
         }
 
         /**

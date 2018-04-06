@@ -10,7 +10,7 @@ public class HeapOOM {
     }
 
     /**
-     *-Xmx20M -Xms20M  -XX:+HeapDumpOnOutOfMemoryError
+     *  -Xmx20M -Xms20M  -XX:+HeapDumpOnOutOfMemoryError
      *      (将堆的最小值-Xms参数与最大值-Xmx参数设置为一样即可避免堆自动扩展)
      *
      * -Xmx20M  堆的最大值 JVM最大分配的内存由-Xmx指定，默认是物理内存的1/4
