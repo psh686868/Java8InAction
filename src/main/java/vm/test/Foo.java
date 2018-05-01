@@ -1,6 +1,5 @@
 package vm.test;
 
-import com.sun.tools.javac.util.Assert;
 
 /**
  * @author PSH
