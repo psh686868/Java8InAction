@@ -1,4 +1,4 @@
-package learnnetty.chapter2;
+package ex.ntytest.express.chapter;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;

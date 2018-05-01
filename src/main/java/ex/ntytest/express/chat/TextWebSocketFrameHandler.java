@@ -1,4 +1,4 @@
-package learnnetty.chat;
+package ex.ntytest.express.chat;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

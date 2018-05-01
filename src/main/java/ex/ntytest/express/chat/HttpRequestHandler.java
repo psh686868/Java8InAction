@@ -1,4 +1,4 @@
-package learnnetty.chat;
+package ex.ntytest.express.chat;
 
 import io.netty.channel.*;
 import io.netty.handler.codec.http.*;
