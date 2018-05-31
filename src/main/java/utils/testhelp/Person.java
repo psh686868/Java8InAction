@@ -1,6 +1,8 @@
 package utils.testhelp;
 
 
+import java.util.List;
+
 /**
  * @author PSH
  * Date: 2017/12/23
@@ -10,6 +12,33 @@ public class Person {
     private String name;
     private String sex;
     private int age;
+    private Integer pageNo;
+
+    private Integer pageSize;
+
+    public Integer getPageNo() {
+        return pageNo;
+    }
+
+    public Person setPageNo(Integer pageNo) {
+        this.pageNo = pageNo;
+        return this;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public Person setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+        return this;
+    }
+
+    public int  getStart() {
+        return ((pageNo == null ? 1 : pageNo)-1) * (pageSize == null ? 20 : pageSize);
+    }
+
+    private List<String> collection;
 
     public Person() {
     }
@@ -48,5 +77,24 @@ public class Person {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public List<String> getCollection() {
+        return collection;
+    }
+
+    public Person setCollection(List<String> collection) {
+        this.collection = collection;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+            "name='" + name + '\'' +
+            ", sex='" + sex + '\'' +
+            ", age=" + age +
+            ", collection=" + collection +
+            '}';
     }
 }

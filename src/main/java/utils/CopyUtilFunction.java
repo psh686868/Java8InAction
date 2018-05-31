@@ -25,10 +25,6 @@ public class CopyUtilFunction {
 
     /**
      * 数据copy
-     *
-     * @param supplier
-     * @param consumer
-     * @param <T>
      */
     public static <T> void copyIfNotNull(Supplier<T> supplier, Consumer<T> consumer) {
         copyIfNotNull(supplier, consumer, Function.identity());
@@ -56,20 +52,19 @@ public class CopyUtilFunction {
         try {
             parse = simpleDateFormat.parse(date);
 //            System.out.println(parse.getTime());
-            Long unixTimeStame = parse.getTime()/1000;
+            Long unixTimeStame = parse.getTime() / 1000;
 //            System.out.println(unixTimeStame.intValue());
         } catch (ParseException e) {
 
         }
-        Map<String,String>map = new HashMap<>();
-        map.put("isNewCar","1");
+        Map<String, String> map = new HashMap<>();
+        map.put("isNewCar", "1");
         //System.out.println( map.get("isNewCar") == null ||  Integer.valueOf(map.get("isNewCar").toString()).equals(0) ? false : true);
-       // System.out.println( map.get("isNewCar") == null ? false : Integer.valueOf(map.get("isNewCar").toString()).equals(0) ? false:true);
+        // System.out.println( map.get("isNewCar") == null ? false : Integer.valueOf(map.get("isNewCar").toString()).equals(0) ? false:true);
 
-        Arrays.asList(1,5,6,4,9,7,2,3).stream().sorted((a,b)->Integer.compare(b,a));
+        Arrays.asList(1, 5, 6, 4, 9, 7, 2, 3).stream().sorted((a, b) -> Integer.compare(b, a));
 //        int i = Integer.parseInt("");
 //        System.out.println(i);
-
 
     }
 

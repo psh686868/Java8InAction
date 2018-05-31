@@ -28,7 +28,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         // 添加
-        log.info("客户端与服务端连接成功");
+        //log.info("客户端与服务端连接成功");
     }
 
     /**
@@ -44,7 +44,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
         if (textWebSocketFrameHandler !=null) {
             ctx.close();
-            log.info("客户端与服务端连接关闭成功");
+            //log.info("客户端与服务端连接关闭成功");
         }
 
     }

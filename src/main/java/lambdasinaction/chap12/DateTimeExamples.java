@@ -49,7 +49,6 @@ public class DateTimeExamples {
 //        System.out.println(now.toString());
 //        System.out.println(minus.toString());
 
-
 //        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd");
 //        int l = 1516598308;
 //        Long aLong = Long.valueOf(l) * 1000;
@@ -141,20 +140,29 @@ public class DateTimeExamples {
         date = date.with(temporal -> {
             DayOfWeek dow = DayOfWeek.of(temporal.get(ChronoField.DAY_OF_WEEK));
             int dayToAdd = 1;
-            if (dow == DayOfWeek.FRIDAY) dayToAdd = 3;
-            if (dow == DayOfWeek.SATURDAY) dayToAdd = 2;
+            if (dow == DayOfWeek.FRIDAY) {
+                dayToAdd = 3;
+            }
+            if (dow == DayOfWeek.SATURDAY) {
+                dayToAdd = 2;
+            }
             return temporal.plus(dayToAdd, ChronoUnit.DAYS);
         });
         System.out.println(date);
     }
 
     private static class NextWorkingDay implements TemporalAdjuster {
+
         @Override
         public Temporal adjustInto(Temporal temporal) {
             DayOfWeek dow = DayOfWeek.of(temporal.get(ChronoField.DAY_OF_WEEK));
             int dayToAdd = 1;
-            if (dow == DayOfWeek.FRIDAY) dayToAdd = 3;
-            if (dow == DayOfWeek.SATURDAY) dayToAdd = 2;
+            if (dow == DayOfWeek.FRIDAY) {
+                dayToAdd = 3;
+            }
+            if (dow == DayOfWeek.SATURDAY) {
+                dayToAdd = 2;
+            }
             return temporal.plus(dayToAdd, ChronoUnit.DAYS);
         }
     }
@@ -169,13 +177,13 @@ public class DateTimeExamples {
         System.out.println(date.format(italianFormatter));
 
         DateTimeFormatter complexFormatter = new DateTimeFormatterBuilder()
-                .appendText(ChronoField.DAY_OF_MONTH)
-                .appendLiteral(". ")
-                .appendText(ChronoField.MONTH_OF_YEAR)
-                .appendLiteral(" ")
-                .appendText(ChronoField.YEAR)
-                .parseCaseInsensitive()
-                .toFormatter(Locale.ITALIAN);
+            .appendText(ChronoField.DAY_OF_MONTH)
+            .appendLiteral(". ")
+            .appendText(ChronoField.MONTH_OF_YEAR)
+            .appendLiteral(" ")
+            .appendText(ChronoField.YEAR)
+            .parseCaseInsensitive()
+            .toFormatter(Locale.ITALIAN);
 
         System.out.println(date.format(complexFormatter));
     }
@@ -232,7 +240,7 @@ public class DateTimeExamples {
 
     }
 
-    private static String changUrl(String siteDomain ,String resultShareUrl) {
+    private static String changUrl(String siteDomain, String resultShareUrl) {
         if (StringUtils.isBlank(resultShareUrl) || StringUtils.isBlank(siteDomain)) {
             return "";
         }

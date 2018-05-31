@@ -4,13 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>manning</groupId>
+    <groupId>com.psh</groupId>
     <artifactId>lambdasinaction</artifactId>
   <packaging>pom</packaging>
   <version>1.0</version>
-  <modules>
-    <module>learnnetty</module>
-  </modules>
+
 
   <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -63,13 +61,55 @@
       <version>3.2.4</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/io.projectreactor/reactor-core -->
     <dependency>
-      <groupId>asm</groupId>
-      <artifactId>asm</artifactId>
-      <version>3.3.1</version>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-core</artifactId>
+      <version>3.1.2.RELEASE</version>
     </dependency>
 
-    <!-- commons-io -->
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-asm -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-asm</artifactId>
+      <version>3.1.1.release</version>
+    </dependency>
+
+
+    <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-core</artifactId>
+          <version>5.0.5.RELEASE</version>
+      </dependency>
+
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-context</artifactId>
+          <version>5.0.5.RELEASE</version>
+      </dependency>
+
+
+
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-beans</artifactId>
+          <version>5.0.5.RELEASE</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-test</artifactId>
+          <version>5.0.5.RELEASE</version>
+          <scope>test</scope>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/javax.inject/javax.inject -->
+      <dependency>
+          <groupId>javax.inject</groupId>
+          <artifactId>javax.inject</artifactId>
+          <version>1</version>
+      </dependency>
+
+      <!-- commons-io -->
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>

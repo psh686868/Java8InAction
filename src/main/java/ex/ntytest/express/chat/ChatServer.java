@@ -21,6 +21,7 @@ import java.lang.management.ManagementFactory;
  */
 @Slf4j
 public class ChatServer {
+
     private String defaultAdd = "127.0.0.1";
     private int defaultPort = 8282;
 
@@ -31,41 +32,41 @@ public class ChatServer {
 
     private final ChannelGroup channelGroup;
 
-    private final ServerBootstrap bootstrap ;
+    private final ServerBootstrap bootstrap;
 
 
     private Channel channel;
 
-    public ChatServer () {
+    public ChatServer() {
         bossGroup = new NioEventLoopGroup();
         wokerGroup = new NioEventLoopGroup();
         channelGroup = new DefaultChannelGroup(ImmediateEventExecutor.INSTANCE);
         bootstrap = new ServerBootstrap();
     }
 
-    public void start () {
-        this.start(this.defaultAdd,this.defaultPort);
+    public void start() {
+        this.start(this.defaultAdd, this.defaultPort);
     }
 
-    public void start (int port) {
-        this.start(this.defaultAdd,port);
+    public void start(int port) {
+        this.start(this.defaultAdd, port);
     }
 
-    public void start (String addRess,int port) {
-        bootstrap.group(this.bossGroup,this.wokerGroup)
-                .channel(NioServerSocketChannel.class)
-                .childHandler(new ChatServerInitalizer(channelGroup));
+    public void start(String addRess, int port) {
+        bootstrap.group(this.bossGroup, this.wokerGroup)
+            .channel(NioServerSocketChannel.class)
+            .childHandler(new ChatServerInitalizer(channelGroup));
         try {
             channel = bootstrap.bind(defaultAdd, defaultPort).sync().channel();
         } catch (InterruptedException e) {
             e.printStackTrace();
-            log.info("聊天程序启动失败:",e);
+            //log.info("聊天程序启动失败:",e);
         }
     }
 
 
     //停止聊天 释放服务
-    public void destory () {
+    public void destory() {
         if (channel != null) {
             channel.close();
         }

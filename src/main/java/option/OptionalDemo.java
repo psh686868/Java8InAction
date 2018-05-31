@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.util.Assert;
+import utils.testhelp.Person;
 
 /**
  * @author PSH
@@ -26,14 +28,27 @@ public class OptionalDemo {
         // List<Setting> settingNames = getSettingNames();
 
         //未使用option
-        Optional<Setting> setting = lookupSettingByName(false);
-        if (setting.isPresent()){
-            displayCheckIn(setting.get());
-        } else {
-            displayMissingSetting();
-        }
+//        Optional<Setting> setting = lookupSettingByName(false);
+//        if (setting.isPresent()){
+//            displayCheckIn(setting.get());
+//        } else {
+//            displayMissingSetting();
+//        }
         //改进上面的
-        setting.ifPresent(OptionalDemo::displayCheckIn);
+//        setting.ifPresent(OptionalDemo::displayCheckIn);
+
+        String aa = "fdsafdsa";
+
+
+
+       Person person = new Person();
+       person.setName("aaaa");
+
+        System.out.println(person.getName().equals(null));
+//
+//        person.setCollection(Arrays.stream(aa.split("\t")).collect(Collectors.toList()));
+//
+//        System.out.println("person = " + person);
 
     }
 
@@ -65,5 +80,7 @@ public class OptionalDemo {
 
     private static void displayCheckIn (Setting setting){}
     private static void displayMissingSetting (){}
+
+
 
 }
