@@ -33,7 +33,7 @@ public class ReadAndWriteMap<K, V> {
     public V get(K k) {
         readLock.lock();
         try {
-            return map.get(k) == null ? null : map.get(k);
+            return map.get(k);
         } finally {
             readLock.unlock();
         }
