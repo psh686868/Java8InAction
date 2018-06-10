@@ -2,37 +2,20 @@ package utils.testhelp;
 
 
 import java.util.List;
+import lombok.Data;
 
 /**
  * @author PSH
  * Date: 2017/12/23
  */
-
+@Data
 public class Person {
     private String name;
     private String sex;
-    private int age;
+    private Integer age;
     private Integer pageNo;
 
     private Integer pageSize;
-
-    public Integer getPageNo() {
-        return pageNo;
-    }
-
-    public Person setPageNo(Integer pageNo) {
-        this.pageNo = pageNo;
-        return this;
-    }
-
-    public Integer getPageSize() {
-        return pageSize;
-    }
-
-    public Person setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
-        return this;
-    }
 
     public int  getStart() {
         return ((pageNo == null ? 1 : pageNo)-1) * (pageSize == null ? 20 : pageSize);
