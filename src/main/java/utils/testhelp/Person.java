@@ -1,19 +1,23 @@
 package utils.testhelp;
 
 
+import java.sql.Timestamp;
 import java.util.List;
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * @author PSH
  * Date: 2017/12/23
  */
 @Data
+@ToString
 public class Person {
     private String name;
     private String sex;
     private Integer age;
     private Integer pageNo;
+    protected Timestamp dateUpdate;//修改时间
 
     private Integer pageSize;
 
@@ -54,7 +58,7 @@ public class Person {
         this.sex = sex;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
@@ -71,13 +75,5 @@ public class Person {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "Person{" +
-            "name='" + name + '\'' +
-            ", sex='" + sex + '\'' +
-            ", age=" + age +
-            ", collection=" + collection +
-            '}';
-    }
+
 }

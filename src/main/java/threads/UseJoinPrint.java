@@ -55,8 +55,13 @@ public class UseJoinPrint {
    }
 
     public static void main(String[] args) {
-       Thread thread = Thread.currentThread();
-        for (int i = 0; i < 20; i++) {
+        try {
+            Thread.sleep(1000 * 40);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Thread thread = Thread.currentThread();
+        for (int i = 0; i < 1; i++) {
             final int index = i + 1;
             DataDealthread dataDealthread = new DataDealthread(thread, () -> {
                 //System.out.println("Thread = " + Thread.currentThread());
