@@ -1,0 +1,88 @@
+package utils;
+
+import com.sun.btrace.AnyType;
+import com.sun.btrace.annotations.*;
+
+import java.lang.reflect.Field;
+
+import static com.sun.btrace.BTraceUtils.*;
+
+@BTrace
+public class HomeBanner {
+
+    @TLS
+    private static long startTime;
+    @TLS
+    private static long getByAccountOrPhoneTime;
+    @TLS
+    private static long getByPhoneForTgcTime;
+
+    @TLS
+    private static long getShopTime;
+
+    @TLS
+    private static long getShopBrandWidgetTime;
+
+    @TLS
+    private static long getByPhoneForTgcSPITime;
+
+    @TLS
+    private static long getCheniuByPhoneSPITime;
+
+    // bizervice接口
+    @OnMethod(clazz = "com.souche.sitemanager.biz.service.impl.BannerBizServiceImpl", method = "getHomeTopBannerList")
+    public static void start() {
+        println("====== BannerBizServiceImpl.getHomeTopBannerList method start info   ==============================");
+        startTime = timeMillis();
+    }
+
+    @OnMethod(clazz = "com.souche.sitemanager.biz.service.impl.BannerBizServiceImpl", method = "getHomeTopBannerList", location = @Location(Kind.RETURN))
+    public static void end() {
+        println("BannerBizServiceImpl.getHomeTopBannerList method end is" + (timeMillis() - startTime));
+    }
+
+
+
+
+    // 上架接口 用户信息
+
+    @OnMethod(clazz = "com.souche.sitemanager.spi.impl.HomePageBannerSPIAdapter", method = "getUpshelfBanners")
+    public static void startGetByAccountOrPhone() {
+        println("====== HomePageBannerSPIAdapter method getUpshelfBanners   ==============================");
+        getByAccountOrPhoneTime = timeMillis();
+    }
+
+    @OnMethod(clazz = "com.souche.sitemanager.spi.impl.HomePageBannerSPIAdapter", method = "getUpshelfBanners", location = @Location(Kind.RETURN))
+    public static void endGetByAccountOrPhone() {
+        println("getUpshelfBanners.getUpshelfBanners method end is" + (timeMillis() - getByAccountOrPhoneTime));
+    }
+
+    //下架接口
+    @OnMethod(clazz = "com.souche.sitemanager.spi.impl.HomePageBannerSPIAdapter", method = "getDownshelfBanners")
+    public static void startGetByPhoneForTgc() {
+        println("====== HomePageBannerSPIAdapter.getDownshelfBanners method info   ==============================");
+        getByPhoneForTgcTime = timeMillis();
+    }
+
+    //
+    @OnMethod(clazz = "com.souche.sitemanager.spi.impl.HomePageBannerSPIAdapter", method = "getDownshelfBanners", location = @Location(Kind.RETURN))
+    public static void endGetByPhoneForTgc() {
+        println("getDownshelfBanners.getDownshelfBanners method end is" + (timeMillis() - getByPhoneForTgcTime));
+    }
+
+    //用户信息接口
+    @OnMethod(clazz = "com.souche.sitemanager.spi.impl.UserInfoSPIAdapter", method = "getUserById")
+    public static void startetUserById() {
+        println("====== UserInfoSPIAdapter.getUserById method info   ==============================");
+        getShopTime = timeMillis();
+    }
+
+    //
+    @OnMethod(clazz = "com.souche.sitemanager.spi.impl.UserInfoSPIAdapter", method = "getUserById", location = @Location(Kind.RETURN))
+    public static void endGetUserById() {
+        println(" UserInfoSPIAdapter.getUserById method end is" + (timeMillis() - getShopTime));
+    }
+
+
+
+}

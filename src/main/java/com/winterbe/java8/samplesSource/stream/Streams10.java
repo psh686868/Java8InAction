@@ -40,11 +40,11 @@ public class Streams10 {
 //        test2(persons);
 //        test3(persons);
 //        test4(persons);
-//        test5(persons);
+        test5(persons);
 //        test6(persons);
-//        test7(persons);
-//        test8(persons);
-        test9(persons);
+        test7(persons);
+        test8(persons);
+//        test9(persons);
     }
 
     private static void test1(List<Person> persons) {
@@ -91,7 +91,7 @@ public class Streams10 {
     private static void test5(List<Person> persons) {
         String names = persons
             .stream()
-            .filter(p -> p.age >= 18)
+           // .filter(p -> p.age >= 18)
             .map(p -> p.name)
             .collect(Collectors.joining(" and ", "In Germany ", " are of legal age."));
 
@@ -130,15 +130,15 @@ public class Streams10 {
         Collector<Person, StringJoiner, String> personNameCollector =
             Collector.of(
                 () -> {
-                    System.out.println("supplier");
+                    //System.out.println("supplier");
                     return new StringJoiner(" | ");
                 },
                 (j, p) -> {
-                    System.out.format("accumulator: p=%s; j=%s\n", p, j);
+                   // System.out.format("accumulator: p=%s; j=%s\n", p, j);
                     j.add(p.name.toUpperCase());
                 },
                 (j1, j2) -> {
-                    System.out.println("merge");
+                    //System.out.println("merge");
                     return j1.merge(j2);
                 },
                 j -> {
