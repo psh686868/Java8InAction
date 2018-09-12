@@ -1,16 +1,12 @@
 package utils;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import utils.testhelp.ProMapTarget;
-import utils.testhelp.ProMapSource;
 
-import java.time.Duration;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author PSH
@@ -18,72 +14,50 @@ import java.util.function.Supplier;
  * Date: 2017/12/29
  */
 public class PropertyMapperTest {
-    private ProMapSource proMapSource = new ProMapSource();
-
-    private ProMapTarget target = new ProMapTarget();
-
     private PropertyMapper map = PropertyMapper.get();
-    private static PropertyMapper smap = PropertyMapper.get();
-
-    @Before
-    public void before () {
-
-    }
-
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    /**
+     * field  value , Consumer,Consumer,
+     * value form
+     * Consumer.accept(Consumer.get)
+     */
     @Test
-    public void testPropertyFromTo() {
-
-        map.from(proMapSource::getAllowedOrigins).to(target::setData1);
-
-        Assert.assertNotNull(target.getData1());
-
-    }
-
-
-    @Test
-    public void testPropertyWhenNot() {
-
-        map.from(proMapSource::getAllowedHeaders).whenNot(CollectionUtils::isEmpty)
-                .to(target::setData2);
-
-        Assert.assertNotNull(target.getData2());
+    public void fromNullValue() {
+        ExampleDest dest = new ExampleDest();
+        this.map.from((String) null).to(dest::setName);
+        assertThat(dest.getName()).isNull();
 
     }
 
     @Test
-    public void testPropertyWhenNonNull() {
-        map.from(proMapSource::getAllowCredentials).whenNonNull()
-                .to(target::setFlag);
-        Assert.assertNotNull(target.getData4());
-        Assert.assertEquals(true,target.isFlag());
-
+    public void fromValue() {
+        ExampleDest dest = new ExampleDest();
+        this.map.from("psh").to(dest::setName);
+        assertThat(dest.getName()).isEqualTo("psh");
     }
 
     @Test
-    public void testPropertyWhenNonNullAs() {
+    public void fromValueAsIntShouldAdaptValue() {
+        Integer result = this.map.from("123").asInt(Long::valueOf)
+            .toInstance(Integer::new);
+        assertThat(result).isEqualTo(123);
+    }
 
-        map.from(()->{
-            if (true) {
-                return null;
-            } else {
-                return true;
-            }
-        })
-                .to(target::setFlag);
-
-        Assert.assertEquals(new Long(1800),target.getMaxAge());
-
+    @Test
+    public void fromValueAlwaysApplyingWhenNonNullShouldAlwaysApplyNonNullToSource() {
+        this.map.alwaysApplyingWhenNonNull().from((String) null).toCall(() -> {
+            System.out.println(" = " );
+        });
     }
 
     @Test
     public void fromWhenSupplierIsNullShouldThrowException() {
         this.thrown.expect(IllegalArgumentException.class);
         this.thrown.expectMessage("Supplier must not be null");
-        this.map.from(null);
+        this.map.from((Supplier<?>) null);
     }
 
     @Test
@@ -98,14 +72,14 @@ public class PropertyMapperTest {
         ExampleSource source = new ExampleSource("test");
         ExampleDest dest = new ExampleDest();
         this.map.from(source::getName).to(dest::setName);
-        Assert.assertEquals(dest.getName(),"test");
+        assertThat(dest.getName()).isEqualTo("test");
     }
 
     @Test
     public void asIntShouldAdaptSupplier() {
         Integer result = this.map.from(() -> "123").asInt(Long::valueOf)
-                .toInstance(Integer::new);
-        //Assert.assertEquals(result).isEqualTo(123);
+            .toInstance(Integer::new);
+        assertThat(result).isEqualTo(123);
     }
 
     @Test
@@ -119,7 +93,7 @@ public class PropertyMapperTest {
     public void asShouldAdaptSupplier() {
         ExampleDest dest = new ExampleDest();
         this.map.from(() -> 123).as(String::valueOf).to(dest::setName);
-        Assert.assertEquals(dest.getName(),"123");
+        assertThat(dest.getName()).isEqualTo("123");
     }
 
     @Test
@@ -130,94 +104,96 @@ public class PropertyMapperTest {
     @Test
     public void whenNonNullWhenSuppliedThrowsNullPointerExceptionShouldNotMap() {
         this.map.from(() -> {
-            System.out.println(Thread.currentThread().getName() + "; from");return 1;
-        }).whenNonNull().as(String::valueOf).toCall(()->{
-            System.out.println(Thread.currentThread().getName() + "; toCall");
-            System.out.println(1);
-        });
+            throw new NullPointerException();
+        }).whenNonNull().as(String::valueOf).toCall(Assert::fail);
     }
-
 
     @Test
     public void whenTrueWhenValueIsTrueShouldMap() {
-        Boolean result = this.map.from(() -> true).whenTrue().toInstance(Boolean::new);
-        //assertThat(result).isTrue();
+        Boolean result = this.map.from(true).whenTrue().toInstance(Boolean::new);
+        assertThat(result).isTrue();
     }
 
-    @Test
-    public void whenTrueWhenValueIsFalseShouldNotMap() {
-        this.map.from(() -> false).whenTrue().toCall(Assert::fail);
-    }
-
-    @Test
-    public void whenFalseWhenValueIsFalseShouldMap() {
-        Boolean result = this.map.from(() -> false).whenFalse().toInstance(Boolean::new);
-        //assertThat(result).isFalse();
-    }
-
-    @Test
-    public void whenFalseWhenValueIsTrueShouldNotMap() {
-        this.map.from(() -> true).whenFalse().toCall(Assert::fail);
-    }
-
-    @Test
-    public void whenFlagWhenValueIsTrueShouldNotMap() {
-        this.map.from(() -> true).when(Boolean.TRUE::equals).toCall(Assert::fail);
-    }
-
-    @Test
-    public void whenHasTextWhenValueIsNullShouldNotMap() {
-        //this.map.from(() -> null).whenHasText().toCall(Assert::fail);
-    }
-
-    @Test
-    public void whenHasTextWhenValueIsEmptyShouldNotMap() {
-        //this.map.from(() -> "").whenHasText().toCall(Assert::fail);
-    }
-
-    @Test
-    public void whenHasTextWhenValueHasTextShouldMap() {
-        //Integer result = this.map.from(() -> 123).whenHasText().toInstance(Integer::new);
-       // assertThat(result).isEqualTo(123);
-    }
-
-    @Test
-    public void whenEqualToWhenValueIsEqualShouldMatch() {
-        String result = this.map.from(() -> "123").whenEqualTo("123")
-                .toInstance(String::new);
-        //assertThat(result).isEqualTo("123");
-    }
-
-    @Test
-    public void whenEqualToWhenValueIsNotEqualShouldNotMatch() {
-        this.map.from(() -> "123").whenEqualTo("321").toCall(Assert::fail);
-    }
-
-    @Test
-    public void whenWhenValueMatchesShouldMap() {
-        String result = this.map.from(() -> "123").when("123"::equals)
-                .toInstance(String::new);
-        //assertThat(result).isEqualTo("123");
-    }
-
-    @Test
-    public void whenWhenValueDoesNotMatchShouldNotMap() {
-        this.map.from(() -> "123").when("321"::equals).toCall(Assert::fail);
-    }
-
-    @Test
-    public void whenWhenCombinedWithAsUsesSourceValue() {
-        Count<String> source = new Count<>(() -> "123");
-        Long result = this.map.from(source).when("123"::equals).as(Integer::valueOf)
-                .when((v) -> v == 123).as(Integer::longValue).toInstance(Long::new);
-        //assertThat(result).isEqualTo(123);
-        //assertThat(source.getCount()).isOne();
-    }
-
-    @Test
-    public void alwaysApplyingWhenNonNullShouldAlwaysApplyNonNullToSource() {
-        this.map.alwaysApplyingWhenNonNull().from(() -> null).toCall(Assert::fail);
-    }
+//    @Test
+//    public void whenTrueWhenValueIsFalseShouldNotMap() {
+//        this.map.from(false).whenTrue().toCall(Assert::fail);
+//    }
+//
+//    @Test
+//    public void whenFalseWhenValueIsFalseShouldMap() {
+//        Boolean result = this.map.from(false).whenFalse().toInstance(Boolean::new);
+//        assertThat(result).isFalse();
+//    }
+//
+//    @Test
+//    public void whenFalseWhenValueIsTrueShouldNotMap() {
+//        this.map.from(true).whenFalse().toCall(Assert::fail);
+//    }
+//
+//    @Test
+//    public void whenHasTextWhenValueIsNullShouldNotMap() {
+//        this.map.from(() -> null).whenHasText().toCall(Assert::fail);
+//    }
+//
+//    @Test
+//    public void whenHasTextWhenValueIsEmptyShouldNotMap() {
+//        this.map.from("").whenHasText().toCall(Assert::fail);
+//    }
+//
+//    @Test
+//    public void whenHasTextWhenValueHasTextShouldMap() {
+//        Integer result = this.map.from(123).whenHasText().toInstance(Integer::new);
+//        assertThat(result).isEqualTo(123);
+//    }
+//
+//    @Test
+//    public void whenEqualToWhenValueIsEqualShouldMatch() {
+//        String result = this.map.from("123").whenEqualTo("123").toInstance(String::new);
+//        assertThat(result).isEqualTo("123");
+//    }
+//
+//    @Test
+//    public void whenEqualToWhenValueIsNotEqualShouldNotMatch() {
+//        this.map.from("123").whenEqualTo("321").toCall(Assert::fail);
+//    }
+//
+//    @Test
+//    public void whenInstanceOfWhenValueIsTargetTypeShouldMatch() {
+//        Long result = this.map.from(123L).whenInstanceOf(Long.class)
+//            .toInstance((value) -> value + 1);
+//        assertThat(result).isEqualTo(124L);
+//    }
+//
+//    @Test
+//    public void whenInstanceOfWhenValueIsNotTargetTypeShouldNotMatch() {
+//        Supplier<Number> supplier = () -> 123L;
+//        this.map.from(supplier).whenInstanceOf(Double.class).toCall(Assert::fail);
+//    }
+//
+//    @Test
+//    public void whenWhenValueMatchesShouldMap() {
+//        String result = this.map.from("123").when("123"::equals).toInstance(String::new);
+//        assertThat(result).isEqualTo("123");
+//    }
+//
+//    @Test
+//    public void whenWhenValueDoesNotMatchShouldNotMap() {
+//        this.map.from("123").when("321"::equals).toCall(Assert::fail);
+//    }
+//
+//    @Test
+//    public void whenWhenCombinedWithAsUsesSourceValue() {
+//        Count<String> source = new Count<>(() -> "123");
+//        Long result = this.map.from(source).when("123"::equals).as(Integer::valueOf)
+//            .when((v) -> v == 123).as(Integer::longValue).toInstance(Long::new);
+//        assertThat(result).isEqualTo(123);
+//        assertThat(source.getCount()).isOne();
+//    }
+//
+//    @Test
+//    public void alwaysApplyingWhenNonNullShouldAlwaysApplyNonNullToSource() {
+//        this.map.alwaysApplyingWhenNonNull().from(() -> null).toCall(Assert::fail);
+//    }
 
     private static class Count<T> implements Supplier<T> {
 

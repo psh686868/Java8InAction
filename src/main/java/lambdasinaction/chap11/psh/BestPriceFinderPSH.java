@@ -15,12 +15,12 @@ import java.util.stream.Stream;
 
 public class BestPriceFinderPSH {
 
-    private final List<Shop> shops = Arrays.asList(new Shop("BestPrice"),
-            new Shop("LetsSaveBig"),
-            new Shop("MyFavoriteShop"),
-            new Shop("BuyItAll"),
-            new Shop("BuyItAllTest1"),
-            new Shop("BuyItAllTest2"),
+    private final List<Shop> shops = Arrays.asList(//new Shop("BestPrice"),
+//            new Shop("LetsSaveBig"),
+//            new Shop("MyFavoriteShop"),
+//            new Shop("BuyItAll"),
+//            new Shop("BuyItAllTest1"),
+//            new Shop("BuyItAllTest2"),
             new Shop("ShopEasy"));
 
     private final Executor executor = Executors.newFixedThreadPool(shops.size(), new ThreadFactory() {
